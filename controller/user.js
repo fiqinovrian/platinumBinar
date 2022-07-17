@@ -1,4 +1,9 @@
 const User = require('../models').User;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+const rahasia = 'Ini rahasia ga boleh disebar-sebar';
 
 module.exports = {
     create(req, res) {
@@ -6,7 +11,7 @@ module.exports = {
             name: req.body.name,
             email: req.body.email,
             gender: req.body.gender,
-            password: req.body.password
+            password: bcrypt.hashSync(req.body.password, 10)
         }
 
         User.create(data)
@@ -76,17 +81,33 @@ module.exports = {
     loginUser(req, res) {
         return User.findOne({
             where: {
-                email: req.body.email,
-                password: req.body.password
+                email: req.body.email
             }
         })
         .then((user) => {
-            if(!user) {
-                return res.status(404).json('User tidak ditemukan')
+            
+            //Cek username and password
+            const isPasswordVAlid = bcrypt.compareSync(req.body.password, user.password);
+           
+            if (!isPasswordVAlid) {
+                return res.json({ message: 'Invalid Username or Password'});
             }
-            return res.status(200).json("Berhasil login")
+
+            //Buat Token
+            const accessToken = jwt.sign({      
+                id: user.id,
+                username: user.username,
+            }, rahasia)
+
+    
+            return res.json({
+                id: user.id,
+                username: user.username,
+                accessToken: accessToken,
+            });
         })
         .catch((err) => {
+            console.log("step 4", err)
             res.status(500).json(err)
         });
     }

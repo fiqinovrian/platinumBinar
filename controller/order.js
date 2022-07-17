@@ -4,7 +4,7 @@ module.exports = {
     create(req, res) {
         const data = {
             userId: req.body.userId,
-            productId: req.body.productId,
+            itemId: req.body.itemId,
             qty: req.body.qty,
             priceTotal: req.body.priceTotal,
             status: req.body.status
@@ -47,7 +47,7 @@ module.exports = {
     updateById(req, res) {
         Order.update({
             userId: req.body.userId,
-            productId: req.body.productId,
+            itemId: req.body.itemId,
             qty: req.body.qty,
             priceTotal: req.body.priceTotal
         }, {

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const restrict = require('../middlewares/restrict');
 
 const userController = require('../controller').user;
 const ItemController = require('../controller').item;
@@ -14,10 +15,10 @@ router.use(function timeLog(req, res, next) {
 
 //routing untuk users
 router.post('/api/v1/user/create', userController.create);
-router.get('/api/v1/users', userController.show);
-router.get('/api/v1/user/:id', userController.getById);
-router.delete('/api/v1/user/:id', userController.deleteById);
-router.put('/api/v1/user/:id', userController.updateById);
+router.get('/api/v1/users', restrict, userController.show);
+router.get('/api/v1/user/:id', restrict, userController.getById);
+router.delete('/api/v1/user/:id', restrict, userController.deleteById);
+router.put('/api/v1/user/:id', restrict, userController.updateById);
 router.post('/api/v1/user/login', userController.loginUser);
 
 //routing untuk produk

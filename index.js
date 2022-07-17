@@ -13,4 +13,4 @@ app.use(express.json()) //untuk melakukan parsing app/json
 app.use(express.urlencoded({ extended: false })); //untuk parsing x-www-urlencoded
 
 app.use('/', indexRouter);
-app.listen(port, () => console.log(`CRUD Challenge listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
